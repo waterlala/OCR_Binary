@@ -17,6 +17,7 @@ class BinaryImage:
 
     def fit(self):
         """處理"""
+        
         imgb_word = np.zeros(self.image.shape, self.image.dtype)
 
         img_df = self.cut_image(self.image, CUT_SIZE)
@@ -34,6 +35,7 @@ class BinaryImage:
 
     def get_background_threshold(self, single_local):
         """計算閥值"""
+
         img_background = cv.dilate(
             np.uint8(single_local),
             np.ones((DILATE_SIZE, DILATE_SIZE), np.uint8))
@@ -52,6 +54,7 @@ class BinaryImage:
 
     def cut_image(self, input_image, input_range):
         """切割圖片"""
+
         image_df = pd.DataFrame(
             columns=['image', 'start_x', 'end_x', 'start_y', 'end_y'])
         for i in range(input_range):
