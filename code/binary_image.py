@@ -12,8 +12,9 @@ DILATE_SIZE = 41
 NOISE_THRESHOLD = 0.9
 
 class BinaryImage:
-    def __init__(self, input_image):
+    def __init__(self, input_image, input_way = 'otsu'):
         self.image = input_image
+        self.way = input_way
 
     def fit(self):
         """處理"""
@@ -22,23 +23,26 @@ class BinaryImage:
 
         img_df = self.cut_image(self.image, CUT_SIZE)
         for i in range(len(img_df)):
-            # single_image = img_df.loc[i]['image']
-            # start_x = img_df.loc[i]['start_x']
-            # start_y = img_df.loc[i]['start_y']
-            # end_x = img_df.loc[i]['end_x']
-            # end_y = img_df.loc[i]['end_y']
-            # bgmean = self.get_background_threshold(single_image)
-            # imgb_word[start_y:end_y, start_x:end_x] = cv.threshold(
-            #     self.image[start_y:end_y, start_x:end_x], int(bgmean * NOISE_THRESHOLD),
-            #     255, cv.THRESH_BINARY)[1]
+            if self.way == 'ostu':
+                single_image = img_df.loc[i]['image']
+                start_x = img_df.loc[i]['start_x']
+                start_y = img_df.loc[i]['start_y']
+                end_x = img_df.loc[i]['end_x']
+                end_y = img_df.loc[i]['end_y']
+                ret2,th2 = cv.threshold(single_image,0,255,cv.THRESH_BINARY+cv.THRESH_OTSU)
+                imgb_word[start_y:end_y, start_x:end_x] = th2
+            else if self.way == 'threshold':
+                single_image = img_df.loc[i]['image']
+                start_x = img_df.loc[i]['start_x']
+                start_y = img_df.loc[i]['start_y']
+                end_x = img_df.loc[i]['end_x']
+                end_y = img_df.loc[i]['end_y']
+                bgmean = self.get_background_threshold(single_image)
+                imgb_word[start_y:end_y, start_x:end_x] = cv.threshold(
+                    self.image[start_y:end_y, start_x:end_x], int(bgmean * NOISE_THRESHOLD),
+                    255, cv.THRESH_BINARY)[1]
 
-            single_image = img_df.loc[i]['image']
-            start_x = img_df.loc[i]['start_x']
-            start_y = img_df.loc[i]['start_y']
-            end_x = img_df.loc[i]['end_x']
-            end_y = img_df.loc[i]['end_y']
-            ret2,th2 = cv.threshold(single_image,0,255,cv.THRESH_BINARY+cv.THRESH_OTSU)
-            imgb_word[start_y:end_y, start_x:end_x] = th2
+            
         return imgb_word
 
     def get_background_threshold(self, single_local):

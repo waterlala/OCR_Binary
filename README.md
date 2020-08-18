@@ -8,6 +8,7 @@ Binary image.
 
 ### Parameters:
 - __image__ : numpy.ndarray, image type is gray, default : None
+- __way__ : string, the way of how to binary, default : otsu, could be : otsu, threshold.
 
 ### Returns:
 - __image__ : numpy.ndarray, image type is gray, default : None
