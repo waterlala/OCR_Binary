@@ -23,7 +23,7 @@ class BinaryImage:
 
         img_df = self.cut_image(self.image, CUT_SIZE)
         for i in range(len(img_df)):
-            if self.way == 'ostu':
+            if self.way == 'otsu':
                 single_image = img_df.loc[i]['image']
                 start_x = img_df.loc[i]['start_x']
                 start_y = img_df.loc[i]['start_y']
