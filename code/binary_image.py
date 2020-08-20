@@ -31,7 +31,7 @@ class BinaryImage:
                 end_y = img_df.loc[i]['end_y']
                 ret2,th2 = cv.threshold(single_image,0,255,cv.THRESH_BINARY+cv.THRESH_OTSU)
                 imgb_word[start_y:end_y, start_x:end_x] = th2
-            else if self.way == 'threshold':
+            elif self.way == 'threshold':
                 single_image = img_df.loc[i]['image']
                 start_x = img_df.loc[i]['start_x']
                 start_y = img_df.loc[i]['start_y']
